@@ -506,15 +506,11 @@ func (e *Email) SendWithTLS(addr string, a smtp.Auth, t *tls.Config) error {
 		return err
 	}
 
-	conn, err := tls.Dial("tcp", addr, t)
+	c, err := smtp.Dial(addr)
 	if err != nil {
 		return err
 	}
 
-	c, err := smtp.NewClient(conn, t.ServerName)
-	if err != nil {
-		return err
-	}
 	defer c.Close()
 	if err = c.Hello("localhost"); err != nil {
 		return err
